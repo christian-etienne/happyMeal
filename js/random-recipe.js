@@ -1,11 +1,23 @@
+// Variables globales
+let recipes = [];
+
 // Charger les recettes lors du chargement de la page
 window.onload = loadRecipesFromJSON;
 
 // Fonction pour charger les recettes à partir du JSON
 function loadRecipesFromJSON() {
+    const recipeContainer = document.getElementById('recipe-container');
+    if (!recipeContainer) {
+        console.error("L'élément 'recipe-container' n'existe pas dans le DOM.");
+        return;
+    }
+
     fetch('data.json')
         .then(response => response.json())
-        .then(data => displayRandomRecipes(data.recettes))
+        .then(data => {
+            recipes = data.recettes;
+            displayRandomRecipes(recipes);
+        })
         .catch(error => console.error('Erreur lors du chargement des recettes :', error));
 }
 
@@ -30,7 +42,7 @@ function displayRandomRecipes(recipes) {
                     <p class="card-text">${recipe.temps_preparation}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="displayRecipeDetails('${recipe.nom}')">Voir la recette</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="displayRecipeDetails('${recipe.nom}')">Voir la recette</button>
                         </div>
                     </div>
                 </div>
@@ -44,6 +56,11 @@ function displayRandomRecipes(recipes) {
 // Fonction pour afficher les détails d'une recette dans le modal
 function displayRecipeDetails(recipeName) {
     const recipe = recipes.find(recipe => recipe.nom === recipeName);
+
+    if (!recipe) {
+        console.error(`Aucune recette trouvée avec le nom "${recipeName}".`);
+        return;
+    }
 
     const modalImage = document.getElementById('recipeModalImage');
     const modalName = document.getElementById('recipeModalName');

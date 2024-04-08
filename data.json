@@ -244,10 +244,22 @@
          "temps_preparation":"20 minutes",
          "image": "images/salade-fruit.jpg",
          "ingredients":[
-            "Fruits variés (fraises, kiwis, oranges, raisins, etc.), coupés en morceaux",
-            "Jus d'orange ou de citron",
-            "Miel ou sirop d'érable (facultatif)",
-            "Feuilles de menthe fraîche pour garnir"
+            {
+               "nom":"Fruits variés (fraises, kiwis, oranges, raisins, etc.), coupés en morceaux",
+               "quantite":"4"
+            },
+            {
+               "nom":"Jus d'orange ou de citron",
+               "quantite":"5cl"
+            },
+            {
+               "nom":"Miel ou sirop d'érable (facultatif)",
+               "quantite":"5cl"
+            },
+            {
+               "nom":"Feuilles de menthe fraîche pour garnir",
+               "quantite":"2"
+            }
          ],
          "etapes":[
             "Coupez tous les fruits en morceaux de taille similaire et placez-les dans un grand bol.",
