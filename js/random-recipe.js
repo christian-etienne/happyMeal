@@ -1,44 +1,85 @@
-// Fonction pour charger les recettes depuis le fichier JSON
+// Charger les recettes lors du chargement de la page
+window.onload = loadRecipesFromJSON;
+
+// Fonction pour charger les recettes à partir du JSON
 function loadRecipesFromJSON() {
-    fetch('data.json') // Modifier le chemin pour pointer vers data.json à la racine du dossier
+    fetch('data.json')
         .then(response => response.json())
-        .then(data => {
-            displayRandomRecipes(data.recettes);
-        })
+        .then(data => displayRandomRecipes(data.recettes))
         .catch(error => console.error('Erreur lors du chargement des recettes :', error));
 }
 
-// Fonction pour afficher une sélection aléatoire de recettes
+// Fonction pour afficher des recettes aléatoires
 function displayRandomRecipes(recipes) {
-    const recipeContainer = document.getElementById("recipe-container");
+    const recipeContainer = document.getElementById('recipe-container');
     recipeContainer.innerHTML = '';
 
-    const numberOfRecipesToShow = 3;
-    const randomIndex = Math.floor(Math.random() * (recipes.length - numberOfRecipesToShow + 1));
-    const randomRecipes = recipes.slice(randomIndex, randomIndex + numberOfRecipesToShow);
+    // Sélectionner trois recettes aléatoires
+    const randomRecipes = getRandomElements(recipes, 3);
 
+    // Afficher chaque recette dans une carte
     randomRecipes.forEach(recipe => {
-        const col = document.createElement('div');
-        col.classList.add('col');
+        const card = document.createElement('div');
+        card.classList.add('col');
 
-        col.innerHTML = `
-            <div class="card h-100 shadow-sm">
-                <img src="${recipe.image}" class="card-img-top" alt="${recipe.nom}">
+        card.innerHTML = `
+            <div class="card shadow-sm">
+                <img src="${recipe.image}" class="card-img-top" alt="Image de ${recipe.nom}">
                 <div class="card-body">
-                    <p class="card-text">${recipe.nom}</p>
+                    <h5 class="card-title">${recipe.nom}</h5>
+                    <p class="card-text">${recipe.temps_preparation}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#${recipe.nom.replaceAll(' ', '-')}">Voir la recette</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="displayRecipeDetails('${recipe.nom}')">Voir la recette</button>
                         </div>
-                        <small class="text-body-secondary">${recipe.temps_preparation}</small>
                     </div>
                 </div>
             </div>
         `;
 
-        recipeContainer.appendChild(col);
+        recipeContainer.appendChild(card);
     });
 }
 
-// Appeler la fonction pour charger les recettes et les afficher au chargement de la page
-loadRecipesFromJSON();
+// Fonction pour afficher les détails d'une recette dans le modal
+function displayRecipeDetails(recipeName) {
+    const recipe = recipes.find(recipe => recipe.nom === recipeName);
+
+    const modalImage = document.getElementById('recipeModalImage');
+    const modalName = document.getElementById('recipeModalName');
+    const modalDuration = document.getElementById('recipeModalDuration');
+    const modalIngredients = document.getElementById('recipeModalIngredients');
+    const modalSteps = document.getElementById('recipeModalSteps');
+
+    modalImage.src = recipe.image;
+    modalName.textContent = recipe.nom;
+    modalDuration.textContent = `Temps de préparation : ${recipe.temps_preparation}`;
+
+    // Afficher les ingrédients
+    modalIngredients.innerHTML = '';
+    recipe.ingredients.forEach(ingredient => {
+        const li = document.createElement('li');
+        li.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
+        modalIngredients.appendChild(li);
+    });
+
+    // Afficher les étapes
+    modalSteps.innerHTML = '';
+    recipe.etapes.forEach((etape, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${etape}`;
+        modalSteps.appendChild(li);
+    });
+
+    // Afficher le modal
+    const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
+        keyboard: false
+    });
+    recipeModal.show();
+}
+
+// Fonction pour obtenir des éléments aléatoires d'un tableau
+function getRandomElements(array, numberOfElements) {
+    const shuffledArray = array.sort(() => Math.random() - 0.5);
+    return shuffledArray.slice(0, numberOfElements);
+}
