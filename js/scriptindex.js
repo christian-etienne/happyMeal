@@ -1,9 +1,10 @@
- // Chargement des données JSON (remplacez "data.json" par le chemin de votre fichier JSON)
+ // Chargement des données JSON 
  fetch('../json/data.json')
  .then(response => response.json())
  .then(data => {
      const searchInput = document.getElementById('searchInput');
      const suggestionsList = document.getElementById('suggestions');
+     const recetteDetailsContainer = document.getElementById('recetteDetailsContainer');
 
      // Fonction de filtrage des suggestions
      function filterSuggestions(input) {
@@ -19,6 +20,9 @@
              suggestionsList.appendChild(li);
          });
      }
+
+     //Fonction pour affichage de details de la recette
+     fonction
 
      // Gérer les événements de saisie dans le champ de recherche
      searchInput.addEventListener('input', () => {
@@ -40,3 +44,6 @@
      });
  })
  .catch(error => console.error('Erreur lors du chargement du fichier JSON :', error));
+
+ /* Affichage des ingrediens et des etapes*/
+
