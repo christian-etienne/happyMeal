@@ -72,6 +72,7 @@
          "nom":"Tarte aux pommes",
          "categorie":"Dessert",
          "temps_preparation":"1 heure",
+         "image": "images/tarte-pomme.jpg",
          "ingredients":[
             {
                "nom":"Pâte brisée",
@@ -112,6 +113,7 @@
          "nom":"Soupe de lentilles",
          "categorie":"Entrée",
          "temps_preparation":"1 heure",
+         "image": "images/soupe-lentille.jpg",
          "ingredients":[
             {
                "nom":"Lentille",
@@ -152,6 +154,7 @@
          "nom":"Pâtes Carbonara",
          "categorie":"Plat principal",
          "temps_preparation":"20 minutes",
+         "image": "images/pate-carbonara.jpg",
          "ingredients":[
             {
                "nom":"Pates",
@@ -193,6 +196,7 @@
          "nom":"Risotto aux champignons",
          "categorie":"Plat principal",
          "temps_preparation":"40 minutes",
+         "image": "images/risotto.webp",
          "ingredients":[
             {
                "nom":"Riz",
@@ -241,6 +245,24 @@
             "Jus d'orange ou de citron",
             "Miel ou sirop d'érable (facultatif)",
             "Feuilles de menthe fraîche pour garnir"
+         "image": "images/salade-fruit.jpg",
+         "ingredients":[
+            {
+               "nom":"Fruits variés (fraises, kiwis, oranges, raisins, etc.), coupés en morceaux",
+               "quantite":"4"
+            },
+            {
+               "nom":"Jus d'orange ou de citron",
+               "quantite":"5cl"
+            },
+            {
+               "nom":"Miel ou sirop d'érable (facultatif)",
+               "quantite":"5cl"
+            },
+            {
+               "nom":"Feuilles de menthe fraîche pour garnir",
+               "quantite":"2"
+            }
          ],
          "etapes":[
             "Coupez tous les fruits en morceaux de taille similaire et placez-les dans un grand bol.",
@@ -255,6 +277,7 @@
          "nom":"Ratatouille provençale",
          "categorie":"Plat principal",
          "temps_preparation":"1 heure",
+         "image": "images/ratatouille.jpg",
          "ingredients":[
             {
                "nom":"Aubergine",
@@ -296,6 +319,7 @@
          "nom":"Salade César",
          "categorie":"Entrée",
          "temps_preparation":"20 minutes",
+         "image": "images/salade-cesar.jpg",
          "ingredients":[
             {
                "nom":"Laitue",
@@ -378,6 +402,10 @@
          "nom":"Muffins aux myrtilles",
          "categorie":"Dessert",
          "temps_preparation":"30 minutes",
+         "nom":"Muffins aux myrtilles",
+         "categorie":"Dessert",
+         "temps_preparation":"30 minutes",
+         "image": "images/muffin.webp",
          "ingredients":[
             {
                "nom":"Farine",
@@ -419,6 +447,7 @@
          "nom":"Lasagnes végétariennes",
          "categorie":"Plat principal",
          "temps_preparation":"1 heure 30 minutes",
+         "image": "images/lasagne-vege.png",
          "ingredients":[
             {
                "nom":"Pâte",
@@ -504,6 +533,10 @@
          "nom":"Tiramisu",
          "categorie":"Dessert",
          "temps_preparation":"30 minutes (+ temps de repos)",
+         "nom":"Tiramisu",
+         "categorie":"Dessert",
+         "temps_preparation":"30 minutes (+ temps de repos)",
+         "image": "images/tiramisu.jpg",
          "ingredients":[
             {
                "nom":"Mascarpone",
