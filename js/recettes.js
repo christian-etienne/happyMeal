@@ -79,7 +79,54 @@ function displayPagination() {
 }
 
 // Fonction pour afficher les détails d'une recette dans le modal
-function displayRecipeDetails(recipeName, recipeImage) {
+// function displayRecipeDetails(recipeName, recipeImage) {
+//     const recipe = recipes.find(recipe => recipe.nom === recipeName);
+  
+//     if (!recipe) {
+//       console.error(`Aucune recette trouvée avec le nom "${recipeName}".`);
+//       return;
+//     }
+  
+//     const modalImage = document.getElementById('recipeModalImage');
+//     const modalName = document.getElementById('recipeModalName');
+//     const modalDuration = document.getElementById('recipeModalDuration');
+//     const modalIngredients = document.getElementById('recipeModalIngredients');
+//     const modalSteps = document.getElementById('recipeModalSteps');
+  
+//     modalImage.src = `${recipeImage}`; 
+//     modalName.textContent = recipe.nom;
+//     modalDuration.textContent = `Temps de préparation : ${recipe.temps_preparation}`;
+  
+//     // Afficher les ingrédients
+//     modalIngredients.innerHTML = '';
+//     recipe.ingredients.forEach(ingredient => {
+//       const li = document.createElement('li');
+//       li.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
+//       modalIngredients.appendChild(li);
+//     });
+  
+//     // Afficher les étapes
+//     modalSteps.innerHTML = '';
+//     recipe.etapes.forEach((etape, index) => {
+//       const li = document.createElement('li');
+//       li.textContent = `${index + 1}. ${etape}`;
+//       modalSteps.appendChild(li);
+//     });
+  
+//     // Afficher le modal
+//     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
+//       keyboard: false
+//     });
+//     recipeModal.show();
+//   }
+  
+//   // Fonction pour obtenir des éléments aléatoires d'un tableau
+//   function getRandomElements(array, numberOfElements) {
+//     const shuffledArray = array.sort(() => Math.random() - 0.5);
+//     return shuffledArray.slice(0, numberOfElements);
+//   }
+ function displayRecipeDetails(recipeName, recipeImage) {
+    // Votre code existant pour afficher les détails de la recette
     const recipe = recipes.find(recipe => recipe.nom === recipeName);
   
     if (!recipe) {
@@ -104,16 +151,31 @@ function displayRecipeDetails(recipeName, recipeImage) {
       li.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
       modalIngredients.appendChild(li);
     });
-  
-    // Afficher les étapes
-    modalSteps.innerHTML = '';
-    recipe.etapes.forEach((etape, index) => {
+
+    
+     // Ajouter un bouton "Ajouter à ma liste" à chaque ingrédient
+     recipe.ingredients.forEach(ingredient => {
       const li = document.createElement('li');
-      li.textContent = `${index + 1}. ${etape}`;
-      modalSteps.appendChild(li);
-    });
-  
-    // Afficher le modal
+      li.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
+      
+      // Créer le bouton "Ajouter à ma liste"
+      const addButton = document.createElement('button');
+      addButton.textContent = 'Ajouter à ma liste';
+      addButton.classList.add('btn', 'btn-primary', 'btn-sm', 'ms-2');
+      addButton.addEventListener('click', () => {
+          // Ajouter le code pour ajouter cet ingrédient à la liste de l'utilisateur
+          // Par exemple, vous pouvez appeler une fonction pour gérer l'ajout à la liste
+          addToMyList(ingredient);
+      });
+
+      // Ajouter le bouton à l'élément de liste des ingrédients
+      li.appendChild(addButton);
+
+      // Ajouter l'élément de liste des ingrédients à la liste des ingrédients
+      modalIngredients.appendChild(li);
+  });
+
+    // Votre code existant pour afficher les étapes et afficher le modal
     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
       keyboard: false
     });
@@ -125,5 +187,15 @@ function displayRecipeDetails(recipeName, recipeImage) {
     const shuffledArray = array.sort(() => Math.random() - 0.5);
     return shuffledArray.slice(0, numberOfElements);
   }
+
+
+
+// Fonction pour ajouter un ingrédient à la liste de l'utilisateur
+function addToMyList(ingredient) {
+    // Ajoutez ici le code pour ajouter l'ingrédient à la liste de l'utilisateur
+    // Par exemple, vous pouvez stocker l'ingrédient dans le stockage local
+    console.log(`Ingrédient ajouté à la liste de l'utilisateur : ${ingredient.nom}`);
+}
+
   
-  loadRecipesFromJSON();
+loadRecipesFromJSON();
