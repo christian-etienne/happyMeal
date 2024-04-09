@@ -11,8 +11,10 @@
      const recette = data.recettes.find(recette => recette.nom === 'Poulet rôti aux herbes');
      const recette2 = data.recettes.find(recette => recette.nom === 'Salade de quinoa aux légumes grillés');
      const recette3 = data.recettes.find(recette => recette.nom === 'Pâtes Carbonara');
-     
 
+
+     
+/*Affichage de Texts dans le cards en utilisantjson!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
      if (recette) {
         // Affichage des ingredients "Poulet rôti aux herbes"
         const listeIngredients = document.createElement('ul');
@@ -53,9 +55,12 @@
     } else{
         carte3.textContent = " La recette n'a pas été retrouvé ";
         }
-        
 
-    // Fonction de filtrage des suggestions
+
+        
+        /*Affichage des éléments dans le bare de recherche!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+   
+        // Fonction de filtrage des suggestions
      function filterSuggestions(input) {
          return data.recettes.filter(recette => recette.nom.toLowerCase().includes(input.toLowerCase()));
      }
@@ -89,7 +94,47 @@
          }
      });
  })
- .catch(error => console.error('Erreur lors du chargement du fichier JSON :', error));
 
- /* Affichage des ingrediens et des etapes*/
 
+ /*Affichage de text de recettes dans le div!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+ const boutton1 = document.getElementById('boutton1');
+ const boutton2 = document.getElementById('boutton2');
+ const boutton3 = document.getElementById('boutton3');
+
+boutton1.addEventListener('click', () => {
+    fetch('../json/data.json')
+        .then(response => response.json())
+        .then(data => {
+            const recetteAffichage = data.recettes.find(recette => recette.nom === 'Poulet rôti aux herbes');
+            const recetteAffichage2 = data.recettes.find(recette => recette.nom === 'Salade de quinoa aux légumes grillés');
+            const recetteAffichage3 = data.recettes.find(recette => recette.nom === 'Pâtes Carbonara');
+           
+                const recetteDetailleeDiv = document.getElementById('recettedetailée');
+                // Nous supprimons le contenu de la div avant d'afficher le nouveau contenu
+                recetteDetailleeDiv.innerHTML = '';
+                const listeIngredients = document.createElement('ul');
+                // Iteration de produits et creation d'une liste <li>
+                recetteAffichage.ingredients.forEach(ingredient => {
+                    const uneListe = document.createElement('li');
+                    uneListe.textContent = `${ingredient.nom} : ${ingredient.quantite}`;
+                    // On ajoute tout les produit de recette <ul>
+                    listeIngredients.appendChild(uneListe);
+                });
+
+                
+                
+                const detailsHTML = `
+                
+                    <h2>${recetteAffichage.nom}</h2>
+                    <p>Catégorie: ${recetteAffichage.categorie}</p>
+                    <p>Temps de préparation: ${recetteAffichage.temps_preparation}</p>
+                    <p>Ingrediens:</p>
+                    ${listeIngredients.outerHTML}
+                    <p>Etapes: ${recetteAffichage.etapes}</p>
+                `;
+                // On ajoute le code pour afficher le contenu de la div
+                recetteDetailleeDiv.innerHTML = detailsHTML;
+           
+        })
+        .catch(error => console.error('Json error:', error));
+});
