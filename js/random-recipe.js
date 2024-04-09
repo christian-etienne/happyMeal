@@ -87,6 +87,7 @@ function displayRecipeDetails(recipeName) {
   const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
     keyboard: false
   });
+  window.recipeModalInstance = recipeModal; // Stocke l'instance du modal dans une variable globale
   recipeModal.show();
 }
 
@@ -125,6 +126,8 @@ addToFavoritesBtn.addEventListener('click', function() {
     } else {
         console.log(`La recette "${recipe.nom}" est déjà dans les favoris.`);
     }
+    window.recipeModalInstance.hide();
+
 });
 
 // Fonction pour afficher les recettes favorites
