@@ -4,13 +4,62 @@
  .then(data => {
      const searchInput = document.getElementById('searchInput');
      const suggestionsList = document.getElementById('suggestions');
-     const recetteDetailsContainer = document.getElementById('recetteDetailsContainer');
+     
+     const carte1 = document.getElementById('carte1');
+     const carte2 = document.getElementById('carte2');
+     const carte3 = document.getElementById('carte3');
+     const recette = data.recettes.find(recette => recette.nom === 'Poulet rôti aux herbes');
+     const recette2 = data.recettes.find(recette => recette.nom === 'Salade de quinoa aux légumes grillés');
+     const recette3 = data.recettes.find(recette => recette.nom === 'Pâtes Carbonara');
+     
 
-     // Fonction de filtrage des suggestions
+     if (recette) {
+        // Affichage des ingredients "Poulet rôti aux herbes"
+        const listeIngredients = document.createElement('ul');
+        recette.ingredients.forEach(ingredient => {
+            const uneListe = document.createElement('li');
+            uneListe.textContent = `${ingredient.nom} : ${ingredient.quantite}`;
+            listeIngredients.appendChild(uneListe);
+        });
+        carte1.appendChild(listeIngredients);
+
+    } else {
+        carte1.textContent = "La recette n'a pas été retrouvée";
+    }
+
+    if (recette2) {
+        // Affichage des ingredients "Poulet rôti aux herbes"
+        const listeIngredients = document.createElement('ul');
+        recette2.ingredients.forEach(ingredient => {
+            const uneListe = document.createElement('li');
+            uneListe.textContent = `${ingredient.nom} : ${ingredient.quantite}`;
+            listeIngredients.appendChild(uneListe);
+        });
+        carte2.appendChild(listeIngredients);
+
+    } else {
+        carte2.textContent = "La recette n'a pas été retrouvée";
+    }
+       // Affichage des ingredients "Pâtes Carbonara"
+    if (recette3) {
+            const listeIngredients = document.createElement('ul');
+            recette3.ingredients.forEach(ingredient => {
+                const uneListe = document.createElement('li');
+                uneListe.textContent = `${ingredient.nom} ${ingredient.quantite}`;
+                listeIngredients.appendChild(uneListe);  
+        });
+        carte3.appendChild(listeIngredients);
+
+    } else{
+        carte3.textContent = " La recette n'a pas été retrouvé ";
+        }
+        
+
+    // Fonction de filtrage des suggestions
      function filterSuggestions(input) {
          return data.recettes.filter(recette => recette.nom.toLowerCase().includes(input.toLowerCase()));
      }
-
+     
      // Fonction pour afficher les suggestions
      function showSuggestions(suggestions) {
          suggestionsList.innerHTML = '';
@@ -20,9 +69,6 @@
              suggestionsList.appendChild(li);
          });
      }
-
-     //Fonction pour affichage de details de la recette
-     fonction
 
      // Gérer les événements de saisie dans le champ de recherche
      searchInput.addEventListener('input', () => {
