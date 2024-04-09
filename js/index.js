@@ -171,27 +171,27 @@ function displayFavorites() {
       displayRecipeDetails(recipeName);
     });
   });
+ // Sélectionne tous les boutons "Supprimer"
+ const deleteFavoriteBtns = document.querySelectorAll('.delete-favorite-btn');
 
-  // Sélectionne tous les boutons "Supprimer"
-  const deleteFavoriteBtns = document.querySelectorAll('.delete-favorite-btn');
+ // Parcours les boutons et ajoute un écouteur d'événements 'click' à chacun
+ deleteFavoriteBtns.forEach(btn => {
+   btn.addEventListener('click', function(event) {
+     // Récupère le nom de la recette à partir de la card parent
+     const recipeName = event.target.closest('.card').querySelector('.card-title').textContent;
 
-  // Parcours les boutons et ajoute un écouteur d'événements 'click' à chacun
-  deleteFavoriteBtns.forEach(btn => {
-    btn.addEventListener('click', function(event) {
-      // Récupère le nom de la recette à partir de la card parent
-      const recipeName = event.target.closest('.card').querySelector('.card-title').textContent;
+     // Supprime la recette du localStorage
+     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+     favorites = favorites.filter(recipe => recipe.nom !== recipeName);
+     localStorage.setItem('favorites', JSON.stringify(favorites));
 
-      // Supprime la recette du localStorage
-      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-      favorites = favorites.filter(recipe => recipe.nom !== recipeName);
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-
-      // Supprime la card de la page
-      event.target.closest('.card').remove();
-    });
-  });
+     // Supprime la card de la page
+     event.target.closest('.card').remove();
+   });
+ });
 }
 
 // Affiche les recettes favorites lors du chargement de la page favoris.html
 window.addEventListener('load', displayFavorites);
 displayFavorites();
+
