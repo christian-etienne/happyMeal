@@ -5,7 +5,7 @@ const recipesPerPage = 4;
 
 async function loadRecipesFromJSON() {
   try {
-    const response = await fetch('../data.json');
+    const response = await fetch('data.json');
     const data = await response.json();
     recipes = data.recettes; // Ici, on ne fait que réaffecter une valeur à la variable globale 'recipes'
     displayRecipes();
