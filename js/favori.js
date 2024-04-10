@@ -119,8 +119,15 @@ async function displayRecipeDetails(recipeName) {
   recipe.ingredients.forEach(ingredient => {
     const li = document.createElement('li');
     li.textContent = `${ingredient}`;
-    modalIngredients.appendChild(li);
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Ajouter à la liste de courses';
+    addButton.classList.add('btn', 'btn-sm', 'btn-success', 'add-to-shopping-list');
+    addButton.addEventListener('click', function() {
+      addToShoppingList(ingredient);
   });
+  li.appendChild(addButton);
+  modalIngredients.appendChild(li);
+});
 
   // Afficher les étapes
   modalSteps.innerHTML = '';
@@ -144,6 +151,15 @@ async function displayRecipeDetails(recipeName) {
     return favorites.some(fav => fav.nom === recipe.nom);
   }
   
+  // Fonction pour gérer l'ajout d'un ingrédient à la liste de courses
+function addToShoppingList(ingredient) {
+  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+  if (!shoppingList.includes(ingredient)) {
+    shoppingList.push(ingredient);
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+  }
+}
+
   // Affiche les recettes favorites lors du chargement de la page favoris.html
   window.addEventListener('load', displayFavorites);
   displayFavorites();
