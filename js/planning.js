@@ -50,15 +50,31 @@ addRecipeBtns.forEach(btn => {
           event.preventDefault();
           const index = event.currentTarget.dataset.index;
           const selectedRecipe = favorites[index];
-          // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
-          const recipeDiv = document.createElement('div');
-          recipeDiv.classList.add('recipe');
-          recipeDiv.innerHTML = `
-            <img src="${selectedRecipe.image}" alt="${selectedRecipe.nom}" class="recipe-image img-fluid">
-            <div class="recipe-name">${selectedRecipe.nom}</div>
-            <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
-          `;
-          cell.appendChild(recipeDiv);
+        // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
+            const recipeDiv = document.createElement('div');
+            recipeDiv.classList.add('recipe');
+
+        // Crée une balise img pour l'image de la recette avec une classe Bootstrap pour une image fluide
+            const recipeImage = document.createElement('img');
+            recipeImage.src = selectedRecipe.image;
+            recipeImage.alt = selectedRecipe.nom;
+            recipeImage.classList.add('img-fluid');
+
+        // Limite la taille de l'image en ajustant les attributs width et height
+            recipeImage.setAttribute('width', '100'); // Limite la largeur de l'image à 100 pixels
+            recipeImage.setAttribute('height', '100'); // Limite la hauteur de l'image à 100 pixels
+
+        // Ajoute l'image à la div de la recette
+            recipeDiv.appendChild(recipeImage);
+
+        // Ajoute le nom de la recette et le bouton Supprimer
+            recipeDiv.innerHTML += `
+                <div class="recipe-name">${selectedRecipe.nom}</div>
+                <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
+                `;
+
+        // Ajoute la div de la recette à la cellule du tableau
+            cell.appendChild(recipeDiv);
 
           // Ajoute un écouteur d'événements 'click' au bouton "Supprimer"
           const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
