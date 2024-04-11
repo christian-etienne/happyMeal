@@ -4,7 +4,7 @@
          "nom":"Poulet rôti aux herbes",
          "categorie":"Plat principal",
          "temps_preparation":"1 heure",
-         "image": "images/poulet-roti.jpg",
+         "image":"images/poulet-roti.jpg",
          "ingredients":[
             {
                "nom":"Poulet",
@@ -35,7 +35,7 @@
          "nom":"Salade de quinoa aux légumes grillés",
          "categorie":"Entrée",
          "temps_preparation":"30 minutes",
-         "image": "images/salade-quinoa.jpg",
+         "image":"images/salade-quinoa.jpg",
          "ingredients":[
             {
                "nom":"quinoa",
@@ -353,6 +353,7 @@
          ]
       },
       {
+         
          "nom":"Muffins aux myrtilles",
          "categorie":"Dessert",
          "temps_preparation":"30 minutes",
@@ -438,6 +439,51 @@
          ]
       },
       {
+         "nom":"Salade niçoise",
+         "categorie":"Entrée",
+         "temps_preparation":"20 minutes",
+         "image":"images/salade-nicoise.jpg",
+         "ingredients":[
+            {
+               "nom":"Laitue",
+               "quantite":"1"
+            },
+            {
+               "nom":"Thon",
+               "quantite":"3"
+            },
+            {
+               "nom":"Oeuf",
+               "quantite":"3"
+            },
+            {
+               "nom":"Tomates",
+               "quantite":"4"
+            },
+            {
+               "nom":"Poivron",
+               "quantite":"4"
+            },
+            {
+               "nom":"Haricot verts",
+               "quantite":"400g"
+            },
+            {
+               "nom":"Huile d'olive",
+               "quantite":"10g"
+            }
+         ],
+         "etapes":[
+            "Lavez et essorez la laitue, puis disposez-la dans un grand saladier.",
+            "Disposez les ingrédients suivants sur la laitue, en les disposant de manière décorative : les tomates coupées en quartiers, les œufs durs coupés en deux, les olives noires, les poivrons rouges en lamelles, les oignons rouges émincés, les haricots verts cuits et les filets d'anchois.",
+            "Émiettez le thon en boîte et répartissez-le sur la salade.",
+            "Dans un petit bol, préparez la vinaigrette en mélangeant de l'huile d'olive, du vinaigre de vin rouge, du sel et du poivre.",
+            "Versez la vinaigrette sur la salade juste avant de servir et mélangez légèrement pour enrober tous les ingrédients.",
+            "Servez immédiatement."
+         ]
+      },
+      {
+         
          "nom":"Tiramisu",
          "categorie":"Dessert",
          "temps_preparation":"30 minutes (+ temps de repos)",

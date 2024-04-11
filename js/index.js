@@ -103,6 +103,7 @@ function isRecipeInFavorites(recipe) {
   return favorites.some(fav => fav.nom === recipe.nom);
 }
 
+
 // Sélectionne le bouton "Ajouter aux favoris"
 const addToFavoritesBtn = document.querySelector('.add-to-favorites-btn');
 
