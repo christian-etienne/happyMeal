@@ -107,6 +107,7 @@ async function displayRecipeDetails(recipeName) {
   const modalDuration = document.getElementById('recipeModalDuration');
   const modalIngredients = document.getElementById('recipeModalIngredients');
   const modalSteps = document.getElementById('recipeModalSteps');
+  const addAllIngredientsBtn = document.getElementById('addAllIngredientsBtn');
 
   modalImage.src = recipe.image;
   modalName.textContent = recipe.nom;
@@ -137,6 +138,14 @@ async function displayRecipeDetails(recipeName) {
     modalSteps.appendChild(li);
   });
 
+  // Ajouter un écouteur d'événements au bouton "Ajouter tous les ingrédients à ma liste"
+  addAllIngredientsBtn.addEventListener('click', function() {
+  recipe.ingredients.forEach(ingredient => {
+    addToShoppingList(ingredient);
+  });
+  // Fermer le modal
+  recipeModal.hide();
+});
   // Afficher le modal
   const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
     keyboard: false
@@ -144,14 +153,24 @@ async function displayRecipeDetails(recipeName) {
   window.recipeModalInstance = recipeModal; // Stocke l'instance du modal dans une variable globale
   recipeModal.show();
 }
-  
-  // Fonction pour vérifier si une recette existe déjà dans les favoris
-  function isRecipeInFavorites(recipe) {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    return favorites.some(fav => fav.nom === recipe.nom);
-  }
-  
-  // Fonction pour gérer l'ajout d'un ingrédient à la liste de courses
+
+// Sélectionne le bouton "Fermer" du modal
+const closeModalBtn = document.querySelector('.modal-footer .btn-danger');
+
+// Ajoute un écouteur d'événements au clic sur le bouton "Fermer"
+closeModalBtn.addEventListener('click', function() {
+  // Cache le modal
+  recipeModal.hide();
+});
+
+
+// Fonction pour vérifier si une recette existe déjà dans les favoris
+function isRecipeInFavorites(recipe) {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  return favorites.some(fav => fav.nom === recipe.nom);
+}
+
+// Fonction pour gérer l'ajout d'un ingrédient à la liste de courses
 function addToShoppingList(ingredient) {
   const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
   if (!shoppingList.includes(ingredient)) {
@@ -160,6 +179,6 @@ function addToShoppingList(ingredient) {
   }
 }
 
-  // Affiche les recettes favorites lors du chargement de la page favoris.html
-  window.addEventListener('load', displayFavorites);
-  displayFavorites();
+// Affiche les recettes favorites lors du chargement de la page favoris.html
+window.addEventListener('load', displayFavorites);
+displayFavorites();
