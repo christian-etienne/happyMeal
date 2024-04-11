@@ -50,21 +50,24 @@ function clearShoppingList() {
   localStorage.removeItem('shoppingList'); // Efface également la liste du localStorage
 }
 
-
-
-
+// Fonction pour générer le PDF des ingrédients
 function generatePDF() {
-  html2pdf().from(document.body).save('myDocument.pdf')
+  // Crée une nouvelle instance de jsPDF
+  const doc = new jsPDF();
+
+  // Récupère la liste de courses depuis le localStorage
+  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+
+  // Ajoute les ingrédients à la liste du PDF
+  doc.setFontSize(12);
+  doc.text('Liste d\'ingrédients :', 10, 10);
+  shoppingList.forEach((ingredient, index) => {
+      doc.text(`${index + 1}. ${ingredient}`, 15, 20 + (index * 10));
+  });
+
+  // Télécharge le PDF
+  doc.save('liste_ingredients.pdf');
 }
-
-
-const button = document.querySelector('pdf');
-
-button.addEventListener("click", (event) => {
-  generatePDF() ;
-});
-
-
 
 // Afficher la liste de courses lors du chargement de la page liste.html
 window.addEventListener('load', displayShoppingList);
