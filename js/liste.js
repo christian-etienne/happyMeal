@@ -1,73 +1,70 @@
-// Variables globales
-let shoppingList = [];
+// Fonction pour ajouter un ingrédient à la liste de courses
+function addToShoppingList(ingredient) {
+  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
 
-// Fonction pour charger la liste de courses depuis le localStorage
-function loadShoppingList() {
-  shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+  // Vérifie si l'ingrédient n'est pas déjà présent dans la liste de courses
+  if (!shoppingList.includes(ingredient)) {
+      shoppingList.push(ingredient);
+      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+      displayShoppingList();
+  } else {
+      console.log(`L'ingrédient "${ingredient}" est déjà dans la liste de courses.`);
+  }
 }
 
-// Fonction pour afficher la liste de courses sur la page liste.html
+// Fonction pour afficher la liste de courses
 function displayShoppingList() {
-  const shoppingListContainer = document.getElementById('shopping-list');
+  const shoppingListContainer = document.getElementById('shopping-list-container');
   shoppingListContainer.innerHTML = '';
 
+  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+
   shoppingList.forEach(ingredient => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
+      const listItem = document.createElement('li');
+      listItem.textContent = ingredient;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Supprimer';
-    deleteBtn.classList.add('btn', 'btn-sm', 'btn-danger', 'delete-from-list-btn');
-    deleteBtn.setAttribute('data-ingredient-name', ingredient.nom);
-    listItem.appendChild(deleteBtn);
+      const removeButton = document.createElement('button');
+      removeButton.textContent = 'Supprimer';
+      removeButton.classList.add('btn', 'btn-warning', 'btn-sm', 'ms-2');
+      removeButton.addEventListener('click', function() {
+          removeFromShoppingList(ingredient);
+      });
 
-    shoppingListContainer.appendChild(listItem);
-  });
-
-  // Ajoute un écouteur d'événements pour les boutons "Supprimer"
-  const deleteFromListBtns = document.querySelectorAll('.delete-from-list-btn');
-  deleteFromListBtns.forEach(btn => {
-    btn.addEventListener('click', function(event) {
-      const ingredientName = event.target.getAttribute('data-ingredient-name');
-      shoppingList = shoppingList.filter(ingredient => ingredient.nom !== ingredientName);
-
-      // Stocke la liste de courses mise à jour dans le localStorage
-      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
-
-      // Supprime l'ingrédient de la liste affichée sur la page
-      event.target.parentElement.remove();
-    });
+      listItem.appendChild(removeButton);
+      shoppingListContainer.appendChild(listItem);
   });
 }
 
-// Fonction pour ajouter un ingrédient à la liste de courses depuis la page favoris.html
-function addIngredientToShoppingList(ingredientName) {
-  const ingredientIndex = shoppingList.findIndex(ingredient => ingredient.nom === ingredientName);
-
-  if (ingredientIndex === -1) {
-    // L'ingrédient n'est pas dans la liste, on l'ajoute
-    shoppingList.push({ nom: ingredientName, quantite: 1 });
-  } else {
-    // L'ingrédient est déjà dans la liste, on incremente la quantité
-    shoppingList[ingredientIndex].quantite++;
-  }
-
-  // Stocke la liste de courses dans le localStorage
+// Fonction pour supprimer un ingrédient de la liste de courses
+function removeFromShoppingList(ingredient) {
+  let shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+  shoppingList = shoppingList.filter(item => item !== ingredient);
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
-}
-
-// Charger la liste de courses depuis le localStorage lors du chargement de la page
-loadShoppingList();
-
-// Écouteur d'événements pour les boutons "Ajouter à la liste" sur la page favoris.html
-document.querySelectorAll('.add-to-list-btn').forEach(btn => {
-  btn.addEventListener('click', function(event) {
-    const ingredientName = event.target.getAttribute('data-ingredient-name');
-    addIngredientToShoppingList(ingredientName);
-  });
-});
-
-// Afficher la liste de courses sur la page liste.html lors du chargement de la page
-if (window.location.pathname === '/liste.html') {
   displayShoppingList();
 }
+
+// Fonction pour effacer toute la liste de courses
+function clearShoppingList() {
+  const shoppingListContainer = document.getElementById('shopping-list-container');
+  shoppingListContainer.innerHTML = ''; // Supprime tous les éléments de la liste
+  localStorage.removeItem('shoppingList'); // Efface également la liste du localStorage
+}
+
+
+
+
+function generatePDF() {
+  html2pdf().from(document.body).save('myDocument.pdf')
+}
+
+
+const button = document.querySelector('pdf');
+
+button.addEventListener("click", (event) => {
+  generatePDF() ;
+});
+
+
+
+// Afficher la liste de courses lors du chargement de la page liste.html
+window.addEventListener('load', displayShoppingList);
