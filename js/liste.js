@@ -1,4 +1,5 @@
 // Fonction pour ajouter un ingrédient à la liste de courses
+
 function addToShoppingList(ingredient) {
   const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
 
@@ -22,10 +23,9 @@ function displayShoppingList() {
   shoppingList.forEach(ingredient => {
       const listItem = document.createElement('li');
       listItem.textContent = ingredient;
-
       const removeButton = document.createElement('button');
       removeButton.textContent = 'Supprimer';
-      removeButton.classList.add('btn', 'btn-warning', 'btn-sm', 'ms-2');
+      removeButton.classList.add('btn', 'btn-warning', 'btn-sm','ms-2');
       removeButton.addEventListener('click', function() {
           removeFromShoppingList(ingredient);
       });
@@ -71,3 +71,4 @@ function generatePDF() {
 
 // Afficher la liste de courses lors du chargement de la page liste.html
 window.addEventListener('load', displayShoppingList);
+

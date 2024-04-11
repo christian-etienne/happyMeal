@@ -122,7 +122,7 @@ async function displayRecipeDetails(recipeName) {
     li.textContent = `${ingredient}`;
     const addButton = document.createElement('button');
     addButton.textContent = 'Ajouter à la liste de courses';
-    addButton.classList.add('btn', 'btn-sm', 'btn-success', 'add-to-shopping-list');
+    addButton.classList.add('btn', 'btn-sm', 'btn-success','d-flex','flex-wrap', 'add-to-shopping-list');
     addButton.addEventListener('click', function() {
       addToShoppingList(ingredient);
   });
