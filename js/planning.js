@@ -197,3 +197,35 @@ function updateLocalStorage() {
   // Stocke les informations de planification de repas dans le localStorage
   localStorage.setItem('mealPlan', JSON.stringify(mealPlanObject));
 }
+
+function generatePDF() {
+    // Crée une nouvelle instance de jsPDF
+    const doc = new jsPDF();
+  
+    let y = 20; // Position Y pour afficher les recettes
+  
+    // Parcours les jours de la semaine
+    document.querySelectorAll('th').forEach(day => {
+      // Récupère le nom du jour
+      const dayName = day.textContent.trim();
+      // Ajoute le nom du jour comme en-tête de section
+      doc.text(dayName, 10, y);
+      y += 10; // Augmente la position Y pour le prochain repas
+      
+      // Parcours les repas pour ce jour
+      const dayIndex = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].indexOf(dayName);
+      const meals = document.querySelectorAll(`td:nth-child(${dayIndex + 2}) .recipe-name`);
+  
+      meals.forEach(meal => {
+        // Ajoute le nom du repas à la position Y actuelle
+        doc.text(meal.textContent.trim(), 20, y);
+        y += 10; // Augmente la position Y pour le prochain repas
+      });
+      
+      y += 10; // Ajoute de l'espace entre les jours
+    });
+  
+    // Télécharge le PDF avec le nom "planning.pdf"
+    doc.save('planning.pdf');
+  }
+  
