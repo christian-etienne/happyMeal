@@ -50,37 +50,42 @@ addRecipeBtns.forEach(btn => {
           event.preventDefault();
           const index = event.currentTarget.dataset.index;
           const selectedRecipe = favorites[index];
-        // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
-            const recipeDiv = document.createElement('div');
-            recipeDiv.classList.add('recipe');
+          // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
+          const recipeDiv = document.createElement('div');
+          recipeDiv.classList.add('recipe');
 
-        // Crée une balise img pour l'image de la recette avec une classe Bootstrap pour une image fluide
-            const recipeImage = document.createElement('img');
-            recipeImage.src = selectedRecipe.image;
-            recipeImage.alt = selectedRecipe.nom;
-            recipeImage.classList.add('img-fluid');
+          // Crée une balise img pour l'image de la recette avec une classe Bootstrap pour une image fluide
+          const recipeImage = document.createElement('img');
+          recipeImage.src = selectedRecipe.image;
+          recipeImage.alt = selectedRecipe.nom;
+          recipeImage.classList.add('img-fluid');
 
-        // Limite la taille de l'image en ajustant les attributs width et height
-            recipeImage.setAttribute('width', '100'); // Limite la largeur de l'image à 100 pixels
-            recipeImage.setAttribute('height', '100'); // Limite la hauteur de l'image à 100 pixels
+          // Limite la taille de l'image en ajustant les attributs width et height
+          recipeImage.setAttribute('width', '100'); // Limite la largeur de l'image à 100 pixels
+          recipeImage.setAttribute('height', '100'); // Limite la hauteur de l'image à 100 pixels
 
-        // Ajoute l'image à la div de la recette
-            recipeDiv.appendChild(recipeImage);
+          // Ajoute l'image à la div de la recette
+          recipeDiv.appendChild(recipeImage);
 
-        // Ajoute le nom de la recette et le bouton Supprimer
-            recipeDiv.innerHTML += `
-                <div class="recipe-name">${selectedRecipe.nom}</div>
-                <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
-                `;
+          // Ajoute le nom de la recette et le bouton Supprimer
+          recipeDiv.innerHTML += `
+            <div class="recipe-name">${selectedRecipe.nom}</div>
+            <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
+          `;
 
-        // Ajoute la div de la recette à la cellule du tableau
-            cell.appendChild(recipeDiv);
+          // Ajoute la div de la recette à la cellule du tableau
+          cell.appendChild(recipeDiv);
+
+          // Cacher le bouton "Ajouter une recette" après avoir ajouté une recette avec succès
+          cell.querySelector('.add-recipe-btn').style.display = 'none';
 
           // Ajoute un écouteur d'événements 'click' au bouton "Supprimer"
           const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
           deleteRecipeBtn.addEventListener('click', function() {
             // Supprime la recette du tableau de planification et met à jour le localStorage
             recipeDiv.remove();
+            // Affiche à nouveau le bouton "Ajouter une recette" après la suppression de la recette
+            cell.querySelector('.add-recipe-btn').style.display = 'block';
             updateLocalStorage();
           });
 
