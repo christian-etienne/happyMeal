@@ -52,7 +52,18 @@
         </div>
     </div>
 
-    <ul id="ingredients-list"></ul>
+    <div class="card text-center">
+        <div class="card-header">
+          Ma Liste d'ingrédients
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush "id="shopping-list-container"></ul>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-danger" onclick="clearShoppingList()">Effacer la liste</button>
+            <button class="btn btn-primary" onclick="generatePDF()">Télécharger ma liste</button>
+        </div>
+    </div>
 
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
@@ -64,7 +75,7 @@
         <p class="text-center text-body-secondary">© 2024 HappyMeal Company, Inc</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="../js/liste.js"></script>
-    <script src="../js/barre-recherche.js"></script>
 </body>
 </html>
