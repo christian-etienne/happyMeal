@@ -1,0 +1,26 @@
+  // Sélectionne le bouton "Ajouter les ingrédients à ma liste"
+  const addToShoppingListBtn = document.querySelector('.add-to-shopping-list-btn');
+  
+  // Écoute l'événement 'click' sur le bouton
+  addToShoppingListBtn.addEventListener('click', function() {
+      // Récupère les informations de la recette à partir de la modal
+      const recipe = {
+          nom: document.getElementById('recipeModalName').textContent,
+          image: document.getElementById('recipeModalImage').src,
+          temps_preparation: document.getElementById('recipeModalDuration').textContent,
+          ingredients: Array.from(document.getElementById('recipeModalIngredients').children).map(li => li.textContent),
+          etapes: Array.from(document.getElementById('recipeModalSteps').children).map(li => li.textContent)
+      };
+  
+      // Vérifie si la recette existe déjà dans les favoris
+      if (!isRecipeInFavorites(recipe)) {
+          // Stocke la recette dans le localStorage
+          let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+          favorites.push(recipe);
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+      } else {
+          console.log(`La recette "${recipe.nom}" est déjà dans les favoris.`);
+      }
+      window.recipeModalInstance.hide();
+  
+  });
