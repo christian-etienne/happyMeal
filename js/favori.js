@@ -181,4 +181,4 @@ function addToShoppingList(ingredient) {
 
 // Affiche les recettes favorites lors du chargement de la page favoris.html
 window.addEventListener('load', displayFavorites);
-displayFavorites();
+
