@@ -92,7 +92,7 @@ function displayRecipeDetails(recipeName, recipeImage) {
     const modalIngredients = document.getElementById('recipeModalIngredients');
     const modalSteps = document.getElementById('recipeModalSteps');
   
-    modalImage.src = `${recipeImage}`; 
+    modalImage.src = `${recipe.image}`; 
     modalName.textContent = recipe.nom;
     modalDuration.textContent = `Temps de préparation : ${recipe.temps_preparation}`;
   

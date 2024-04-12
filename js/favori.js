@@ -125,10 +125,10 @@ async function displayRecipeDetails(recipeName) {
     addButton.classList.add('btn', 'btn-sm', 'btn-success','d-flex','flex-wrap', 'add-to-shopping-list');
     addButton.addEventListener('click', function() {
       addToShoppingList(ingredient);
+    });
+    li.appendChild(addButton);
+    modalIngredients.appendChild(li);
   });
-  li.appendChild(addButton);
-  modalIngredients.appendChild(li);
-});
 
   // Afficher les étapes
   modalSteps.innerHTML = '';
