@@ -1,38 +1,25 @@
-// Fonction pour ajouter un ingrédient à la liste de courses
-
-function addToShoppingList(ingredient) {
-  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
-
-  // Vérifie si l'ingrédient n'est pas déjà présent dans la liste de courses
-  if (!shoppingList.includes(ingredient)) {
-      shoppingList.push(ingredient);
-      localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
-      displayShoppingList();
-  } else {
-      console.log(`L'ingrédient "${ingredient}" est déjà dans la liste de courses.`);
-  }
-}
+let recipes = [];
 
 // Fonction pour afficher la liste de courses
 function displayShoppingList() {
   const shoppingListContainer = document.getElementById('shopping-list-container');
-  shoppingListContainer.innerHTML = '';
+  shoppingListContainer.innerHTML = ''; // Supprime le contenu précédent
 
   const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
 
-  shoppingList.forEach(ingredient => {
+  if (shoppingList.length === 0) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.textContent = 'Aucun ingrédient ajouté à la liste.';
+    shoppingListContainer.appendChild(emptyMessage);
+  } else {
+    const list = document.createElement('ul');
+    shoppingList.forEach((ingredient, index) => {
       const listItem = document.createElement('li');
-      listItem.textContent = ingredient;
-      const removeButton = document.createElement('button');
-      removeButton.textContent = 'Supprimer';
-      removeButton.classList.add('btn', 'btn-warning', 'btn-sm','ms-2');
-      removeButton.addEventListener('click', function() {
-          removeFromShoppingList(ingredient);
-      });
-
-      listItem.appendChild(removeButton);
-      shoppingListContainer.appendChild(listItem);
-  });
+      listItem.textContent = `${index + 1}. ${ingredient}`;
+      list.appendChild(listItem);
+    });
+    shoppingListContainer.appendChild(list);
+  }
 }
 
 // Fonction pour supprimer un ingrédient de la liste de courses

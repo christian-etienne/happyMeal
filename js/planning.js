@@ -51,37 +51,8 @@ addRecipeBtns.forEach(btn => {
           event.preventDefault();
           const index = event.currentTarget.dataset.index;
           const selectedRecipe = favorites[index];
-          // Dodanie wybranego przepisu do odpowiedniej komórki kalendarza
-          const recipeDiv = document.createElement('div');
-          recipeDiv.classList.add('recipe');
-
-          const recipeImage = document.createElement('img');
-          recipeImage.src = selectedRecipe.image;
-          recipeImage.alt = selectedRecipe.nom;
-          recipeImage.classList.add('img-fluid');
-          recipeImage.setAttribute('width', '100');
-          recipeImage.setAttribute('height', '100');
-
-          recipeDiv.appendChild(recipeImage);
-
-          recipeDiv.innerHTML += `
-            <div class="recipe-name">${selectedRecipe.nom}</div>
-            <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
-          `;
-
-          cell.appendChild(recipeDiv);
-
-          // Ukrycie przycisku "Ajouter une recette" po pomyślnym dodaniu przepisu
-          cell.querySelector('.add-recipe-btn').style.display = 'none';
-
-          // Dodanie nasłuchiwacza zdarzeń 'click' do przycisku "Supprimer"
-          const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
-          deleteRecipeBtn.addEventListener('click', function() {
-            // Usunięcie przepisu z kalendarza i aktualizacja local storage
-            recipeDiv.remove();
-            cell.querySelector('.add-recipe-btn').style.display = 'block';
-            updateLocalStorage();
-          });
+          // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
+          addRecipeToMealPlan(selectedRecipe, cell);
 
           // Aktualizacja local storage z aktualnymi informacjami o planie posiłków
           updateLocalStorage();
@@ -161,32 +132,76 @@ function updateLocalStorage() {
 
 // Funkcja do generowania pliku PDF z planem posiłków
 function generatePDF() {
-    // Utworzenie nowej instancji jsPDF
-    const doc = new jsPDF();
-  
-    let y = 20; // Pozycja Y do wyświetlania przepisów
-  
-    // Przeglądanie dni tygodnia
-    document.querySelectorAll('th').forEach(day => {
-      // Pobranie nazwy dnia
-      const dayName = day.textContent.trim();
-      // Dodanie nazwy dnia jako nagłówka sekcji
-      doc.text(dayName, 10, y);
-      y += 10; // Zwiększenie pozycji Y dla kolejnego posiłku
-      
-      // Przeglądanie posiłków dla danego dnia
-      const dayIndex = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].indexOf(dayName);
-      const meals = document.querySelectorAll(`td:nth-child(${dayIndex + 2}) .recipe-name`);
-  
-      meals.forEach(meal => {
-        // Dodanie nazwy posiłku na aktualnej pozycji Y
-        doc.text(meal.textContent.trim(), 20, y);
-        y += 10; // Zwiększenie pozycji Y dla kolejnego posiłku
-      });
-      
-      y += 10; // Dodanie odstępu między dniami
+  // Crée une nouvelle instance de jsPDF
+  const doc = new jsPDF();
+
+  let y = 20; // Position Y pour afficher les recettes
+
+  // Parcours les jours de la semaine
+  document.querySelectorAll('th').forEach(day => {
+    // Récupère le nom du jour
+    const dayName = day.textContent.trim();
+    // Ajoute le nom du jour comme en-tête de section
+    doc.text(dayName, 10, y);
+    y += 10; // Augmente la position Y pour le prochain repas
+
+    // Parcours les repas pour ce jour
+    const dayIndex = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].indexOf(dayName);
+    const meals = document.querySelectorAll(`td:nth-child(${dayIndex + 2}) .recipe-name`);
+
+    meals.forEach(meal => {
+      // Ajoute le nom du repas à la position Y actuelle
+      doc.text(meal.textContent.trim(), 20, y);
+      y += 10; // Augmente la position Y pour le prochain repas
     });
-  
-    // Pobranie pliku PDF o nazwie "planning.pdf"
-    doc.save('planning.pdf');
+
+    y += 10; // Ajoute de l'espace entre les jours
+  });
+
+  // Télécharge le PDF avec le nom "planning.pdf"
+  doc.save('planning.pdf');
+}
+
+// Fonction pour ajouter une recette au tableau de planification et mettre à jour le localStorage
+function addRecipeToMealPlan(recipe, cell) {
+  const recipeDiv = document.createElement('div');
+  recipeDiv.classList.add('recipe');
+
+  // Crée une balise img pour l'image de la recette avec une classe Bootstrap pour une image fluide
+  const recipeImage = document.createElement('img');
+  recipeImage.src = recipe.image;
+  recipeImage.alt = recipe.nom;
+  recipeImage.classList.add('img-fluid');
+
+  // Limite la taille de l'image en ajustant les attributs width et height
+  recipeImage.setAttribute('width', '100'); // Limite la largeur de l'image à 100 pixels
+  recipeImage.setAttribute('height', '100'); // Limite la hauteur de l'image à 100 pixels
+
+  // Ajoute l'image à la div de la recette
+  recipeDiv.appendChild(recipeImage);
+
+  // Ajoute le nom de la recette et le bouton Supprimer
+  recipeDiv.innerHTML += `
+    <div class="recipe-name">${recipe.nom}</div>
+    <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
+  `;
+
+  // Ajoute la div de la recette à la cellule du tableau
+  cell.appendChild(recipeDiv);
+
+  // Cacher le bouton "Ajouter une recette" après avoir ajouté une recette avec succès
+  cell.querySelector('.add-recipe-btn').style.display = 'none';
+
+  // Ajoute un écouteur d'événements 'click' au bouton "Supprimer"
+  const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
+  deleteRecipeBtn.addEventListener('click', function() {
+    // Supprime la recette du tableau de planification et met à jour le localStorage
+    recipeDiv.remove();
+    // Affiche à nouveau le bouton "Ajouter une recette" après la suppression de la recette
+    cell.querySelector('.add-recipe-btn').style.display = 'block';
+    updateLocalStorage();
+  });
+
+  // Met à jour le localStorage avec les informations de planification de repas actuelles
+  updateLocalStorage();
 }
