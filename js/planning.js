@@ -1,95 +1,92 @@
-// Sélectionne tous les boutons "Ajouter une recette"
+
+// Selekcja wszystkich przycisków "Ajouter une recette"
 const addRecipeBtns = document.querySelectorAll('.add-recipe-btn');
 
-// Parcours les boutons et ajoute un écouteur d'événements 'click' à chacun
+// Przeglądanie przycisków i dodawanie nasłuchiwacza zdarzeń 'click' do każdego
 addRecipeBtns.forEach(btn => {
   btn.addEventListener('click', function(event) {
-    // Récupère la cellule du tableau correspondante à partir du bouton cliqué
+    // Pobranie komórki tabeli odpowiadającej klikniętemu przyciskowi
     const cell = event.target.closest('td');
 
-    // Ouvre la boîte de dialogue modale pour la sélection des recettes
+    // Otwarcie okna modalnego do wyboru przepisów
     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
     recipeModal.show();
 
-    // Vérifie si l'élément .modal-body existe avant de sélectionner les recettes favorites
+    // Sprawdzenie, czy istnieje element .modal-body przed wyborem ulubionych przepisów
     const modalBody = document.querySelector('.modal-body');
     if (modalBody) {
-      // Nettoie le contenu existant du modal-body avant d'ajouter de nouvelles recettes
+      // Wyczyszczenie istniejącej zawartości .modal-body przed dodaniem nowych przepisów
       modalBody.innerHTML = '';
 
-      // Crée la liste des recettes favorites dans la boîte de dialogue modale
+      // Utworzenie listy ulubionych przepisów w oknie modalnym
       const modalRecipeList = document.createElement('div');
       modalRecipeList.classList.add('list-group');
       modalBody.appendChild(modalRecipeList);
 
-      // Récupère les recettes favorites à partir du localStorage
+      // Pobranie ulubionych przepisów z local storage
       const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
-      // Ajoute chaque recette favorite à la liste dans la boîte de dialogue modale
+      // Dodanie każdego ulubionego przepisu do listy w oknie modalnym
       favorites.forEach((favorite, index) => {
         const recipeListItem = document.createElement('a');
         recipeListItem.href = '#';
         recipeListItem.classList.add('list-group-item', 'list-group-item-action', 'modal-recipe-btn');
-        recipeListItem.dataset.index = index; // Ajoute l'index de la recette favorite
+        recipeListItem.dataset.index = index; // Dodanie indeksu ulubionego przepisu
 
         const recipeImage = document.createElement('img');
         recipeImage.src = favorite.image;
         recipeImage.alt = favorite.nom;
-        recipeImage.classList.add('img-fluid'); // Classe Bootstrap pour une image fluide
-        recipeImage.style.maxWidth = '100px'; // Limite la largeur maximale de l'image
+        recipeImage.classList.add('img-fluid');
+        recipeImage.style.maxWidth = '100px'; // Ograniczenie maksymalnej szerokości obrazka
 
         recipeListItem.appendChild(recipeImage);
-        recipeListItem.appendChild(document.createTextNode(favorite.nom)); // Ajoute le nom de la recette
+        recipeListItem.appendChild(document.createTextNode(favorite.nom)); // Dodanie nazwy przepisu
 
         modalRecipeList.appendChild(recipeListItem);
       });
 
-      // Ajoute un écouteur d'événements pour chaque recette dans le modal
+      // Dodanie nasłuchiwacza zdarzeń dla każdego przepisu w oknie modalnym
       modalRecipeList.querySelectorAll('.modal-recipe-btn').forEach(btn => {
         btn.addEventListener('click', function(event) {
           event.preventDefault();
           const index = event.currentTarget.dataset.index;
           const selectedRecipe = favorites[index];
-          // Ajoute la recette sélectionnée à la cellule correspondante du tableau de planification
+          // Dodanie wybranego przepisu do odpowiedniej komórki kalendarza
           const recipeDiv = document.createElement('div');
           recipeDiv.classList.add('recipe');
 
-          // Crée une balise img pour l'image de la recette avec une classe Bootstrap pour une image fluide
           const recipeImage = document.createElement('img');
           recipeImage.src = selectedRecipe.image;
           recipeImage.alt = selectedRecipe.nom;
           recipeImage.classList.add('img-fluid');
+          recipeImage.setAttribute('width', '100');
+          recipeImage.setAttribute('height', '100');
 
-          // Limite la taille de l'image en ajustant les attributs width et height
-          recipeImage.setAttribute('width', '100'); // Limite la largeur de l'image à 100 pixels
-          recipeImage.setAttribute('height', '100'); // Limite la hauteur de l'image à 100 pixels
-
-          // Ajoute l'image à la div de la recette
           recipeDiv.appendChild(recipeImage);
 
-          // Ajoute le nom de la recette et le bouton Supprimer
           recipeDiv.innerHTML += `
             <div class="recipe-name">${selectedRecipe.nom}</div>
             <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
           `;
 
-          // Ajoute la div de la recette à la cellule du tableau
           cell.appendChild(recipeDiv);
 
-          // Cacher le bouton "Ajouter une recette" après avoir ajouté une recette avec succès
+          // Ukrycie przycisku "Ajouter une recette" po pomyślnym dodaniu przepisu
           cell.querySelector('.add-recipe-btn').style.display = 'none';
 
-          // Ajoute un écouteur d'événements 'click' au bouton "Supprimer"
+          // Dodanie nasłuchiwacza zdarzeń 'click' do przycisku "Supprimer"
           const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
           deleteRecipeBtn.addEventListener('click', function() {
-            // Supprime la recette du tableau de planification et met à jour le localStorage
+            // Usunięcie przepisu z kalendarza i aktualizacja local storage
             recipeDiv.remove();
-            // Affiche à nouveau le bouton "Ajouter une recette" après la suppression de la recette
             cell.querySelector('.add-recipe-btn').style.display = 'block';
             updateLocalStorage();
           });
 
-          // Ferme la boîte de dialogue modale
+          // Aktualizacja local storage z aktualnymi informacjami o planie posiłków
+          updateLocalStorage();
+
+          // Zamknięcie okna modalnego
           recipeModal.hide();
         });
       });
@@ -97,135 +94,99 @@ addRecipeBtns.forEach(btn => {
   });
 });
 
-// Vérifie si des informations de planification de repas sont stockées dans le localStorage
-const mealPlan = localStorage.getItem('mealPlan');
-
-// Si des informations de planification de repas sont stockées dans le localStorage, remplit le tableau de planification en conséquence
-if (mealPlan) {
-  const mealPlanObject = JSON.parse(mealPlan);
-
-  // Parcours les jours de la semaine et les repas
-  Object.entries(mealPlanObject).forEach(([day, meals]) => {
-    // Vérifie si meals est un tableau avant de l'itérer
-    if (Array.isArray(meals)) {
-      meals.forEach(meal => {
-        // Récupère la cellule du tableau correspondante
-        const cell = document.querySelector(`td:nth-child(${['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].indexOf(day) + 2})`);
-
-        // Ajoute la recette à la cellule du tableau
-        const recipeDiv = document.createElement('div');
-        recipeDiv.classList.add('recipe');
-        recipeDiv.innerHTML = `
-          <img src="${meal.image}" alt="${meal.name}" class="recipe-image img-fluid">
-          <div class="recipe-name">${meal.name}</div>
-          <button type="button" class="btn btn-danger delete-recipe-btn">Supprimer</button>
-        `;
-        cell.appendChild(recipeDiv);
-
-        // Ajoute un écouteur d'événements 'click' au bouton "Supprimer"
-        const deleteRecipeBtn = recipeDiv.querySelector('.delete-recipe-btn');
-        deleteRecipeBtn.addEventListener('click', function() {
-          // Supprime la recette du tableau de planification et met à jour le localStorage
-          recipeDiv.remove();
-          updateLocalStorage();
-        });
-      });
-    }
-  });
-}
-
-// Ajoute un écouteur d'événements pour la fermeture de la boîte de dialogue modale
+// Dodanie nasłuchiwacza zdarzeń dla zamknięcia okna modalnego
 const recipeModal = document.getElementById('recipeModal');
 recipeModal.addEventListener('hidden.bs.modal', function() {
-  // Met à jour le localStorage avec les informations de planification de repas actuelles
+  // Aktualizacja local storage z aktualnymi informacjami o planie posiłków
   updateLocalStorage();
 });
 
-// Fonction pour mettre à jour le localStorage avec les informations de planification de repas actuelles
+// Funkcja aktualizująca local storage z aktualnymi informacjami o planie posiłków
 function updateLocalStorage() {
-  // Vérifie si le tableau de planification existe
+  // Sprawdzenie, czy istnieje tabela planu
   const mealPlanTable = document.querySelector('tbody');
   if (!mealPlanTable) {
     console.error("Tableau de planification introuvable.");
     return;
   }
 
-  // Crée un objet JSON pour stocker les informations de planification de repas
+  // Utworzenie obiektu JSON do przechowywania informacji o planie posiłków
   const mealPlanObject = {};
 
-  // Parcours les lignes du tableau de planification
+  // Przeglądanie wierszy tabeli planu
   const rows = mealPlanTable.querySelectorAll('tr');
   rows.forEach(row => {
-    // Vérifie si la ligne actuelle contient le jour de la semaine
+    // Sprawdzenie, czy bieżący wiersz zawiera dzień tygodnia
     const dayCell = row.querySelector('th');
-    if (!dayCell) return; // Ignore les lignes sans jour de la semaine
+    if (!dayCell) return; // Pominięcie wierszy bez dnia tygodnia
 
-    const day = dayCell.textContent.trim(); // Récupère le jour de la semaine
+    const day = dayCell.textContent.trim(); // Pobranie dnia tygodnia
 
-    // Parcours les cellules de repas dans la ligne actuelle
+    // Przeglądanie komórek posiłków w bieżącym wierszu
     const mealCells = row.querySelectorAll('td');
     mealCells.forEach(mealCell => {
-      const mealType = mealCell.textContent.trim(); // Récupère le type de repas (Déjeuner, Dîner, etc.)
+      const mealType = mealCell.textContent.trim(); // Pobranie typu posiłku (Déjeuner, Dîner, itp.)
       const recipes = mealCell.querySelectorAll('.recipe');
 
-      // Vérifie si des recettes sont présentes dans la cellule
+      // Sprawdzenie, czy w komórce są jakieś przepisy
       if (recipes.length > 0) {
         const recipesArray = [];
 
-        // Parcours les recettes dans la cellule
+        // Przeglądanie przepisów w komórce
         recipes.forEach(recipe => {
           const recipeName = recipe.querySelector('.recipe-name');
-          const recipeImage = recipe.querySelector('.recipe-image');
+          const recipeImage = recipe.querySelector('.recipe img');
 
-          // Vérifie si le nom de la recette et l'image existent avant de les ajouter à l'objet
+          // Sprawdzenie, czy istnieją nazwa przepisu i jego obraz przed dodaniem do obiektu
           if (recipeName && recipeImage) {
             recipesArray.push({ name: recipeName.textContent, image: recipeImage.src });
           }
         });
 
-        // Vérifie si l'objet mealPlanObject contient déjà une clé pour le jour de la semaine
+        // Sprawdzenie, czy obiekt mealPlanObject zawiera już klucz dla dnia tygodnia
         if (!mealPlanObject[day]) {
           mealPlanObject[day] = {};
         }
 
-        // Ajoute les recettes au type de repas correspondant dans l'objet mealPlanObject
+        // Dodanie przepisów do odpowiedniego typu posiłku w obiekcie mealPlanObject
         mealPlanObject[day][mealType] = recipesArray;
       }
     });
   });
 
-  // Stocke les informations de planification de repas dans le localStorage
+  // Zapisanie informacji o planie posiłków w local storage
   localStorage.setItem('mealPlan', JSON.stringify(mealPlanObject));
+  console.log(localStorage)
 }
 
+// Funkcja do generowania pliku PDF z planem posiłków
 function generatePDF() {
-    // Crée une nouvelle instance de jsPDF
+    // Utworzenie nowej instancji jsPDF
     const doc = new jsPDF();
   
-    let y = 20; // Position Y pour afficher les recettes
+    let y = 20; // Pozycja Y do wyświetlania przepisów
   
-    // Parcours les jours de la semaine
+    // Przeglądanie dni tygodnia
     document.querySelectorAll('th').forEach(day => {
-      // Récupère le nom du jour
+      // Pobranie nazwy dnia
       const dayName = day.textContent.trim();
-      // Ajoute le nom du jour comme en-tête de section
+      // Dodanie nazwy dnia jako nagłówka sekcji
       doc.text(dayName, 10, y);
-      y += 10; // Augmente la position Y pour le prochain repas
+      y += 10; // Zwiększenie pozycji Y dla kolejnego posiłku
       
-      // Parcours les repas pour ce jour
+      // Przeglądanie posiłków dla danego dnia
       const dayIndex = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].indexOf(dayName);
       const meals = document.querySelectorAll(`td:nth-child(${dayIndex + 2}) .recipe-name`);
   
       meals.forEach(meal => {
-        // Ajoute le nom du repas à la position Y actuelle
+        // Dodanie nazwy posiłku na aktualnej pozycji Y
         doc.text(meal.textContent.trim(), 20, y);
-        y += 10; // Augmente la position Y pour le prochain repas
+        y += 10; // Zwiększenie pozycji Y dla kolejnego posiłku
       });
       
-      y += 10; // Ajoute de l'espace entre les jours
+      y += 10; // Dodanie odstępu między dniami
     });
   
-    // Télécharge le PDF avec le nom "planning.pdf"
+    // Pobranie pliku PDF o nazwie "planning.pdf"
     doc.save('planning.pdf');
-  }
-  
+}

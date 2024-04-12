@@ -43,7 +43,7 @@ function onSearchInput(event) {
     resultLink.textContent = recipe.nom;
     resultLink.addEventListener('click', (event) => {
       event.preventDefault();
-      displayRecipeDetails(recipe.nom); // Appelle la fonction displayRecipeDetails() avec la recette sélectionnée
+      // Appelle la fonction displayRecipeDetails() avec la recette sélectionnée
     });
     resultItem.appendChild(resultLink);
     searchResultsList.appendChild(resultItem);
