@@ -1,3 +1,27 @@
+let recipes = [];
+
+// Fonction pour afficher la liste de courses
+function displayShoppingList() {
+  const shoppingListContainer = document.getElementById('shopping-list-container');
+  shoppingListContainer.innerHTML = ''; // Supprime le contenu précédent
+
+  const shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+
+  if (shoppingList.length === 0) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.textContent = 'Aucun ingrédient ajouté à la liste.';
+    shoppingListContainer.appendChild(emptyMessage);
+  } else {
+    const list = document.createElement('ul');
+    shoppingList.forEach((ingredient, index) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${index + 1}. ${ingredient}`;
+      list.appendChild(listItem);
+    });
+    shoppingListContainer.appendChild(list);
+  }
+}
+
 // Fonction pour supprimer un ingrédient de la liste de courses
 function removeFromShoppingList(ingredient) {
   let shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
