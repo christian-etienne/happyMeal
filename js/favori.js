@@ -107,6 +107,7 @@ async function displayRecipeDetails(recipeName) {
   const modalDuration = document.getElementById('recipeModalDuration');
   const modalIngredients = document.getElementById('recipeModalIngredients');
   const modalSteps = document.getElementById('recipeModalSteps');
+  const mealPlanningButton = document.getElementById('mealPlanningButton');
 
   modalImage.src = recipe.image;
   modalName.textContent = recipe.nom;
@@ -124,10 +125,10 @@ async function displayRecipeDetails(recipeName) {
     addButton.classList.add('btn', 'btn-sm', 'btn-success', 'add-to-shopping-list');
     addButton.addEventListener('click', function() {
       addToShoppingList(ingredient);
+    });
+    li.appendChild(addButton);
+    modalIngredients.appendChild(li);
   });
-  li.appendChild(addButton);
-  modalIngredients.appendChild(li);
-});
 
   // Afficher les étapes
   modalSteps.innerHTML = '';
@@ -137,6 +138,22 @@ async function displayRecipeDetails(recipeName) {
     modalSteps.appendChild(li);
   });
 
+  // Ajouter le bouton pour planifier le repas
+  mealPlanningButton.innerHTML = `
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      Planifiez votre repas
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="mealPlanningButton">
+      <li><button class="dropdown-item" onclick="addToMealPlan('Lundi', '${recipe.nom}')">Lundi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Mardi', '${recipe.nom}')">Mardi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Mercredi', '${recipe.nom}')">Mercredi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Jeudi', '${recipe.nom}')">Jeudi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Vendredi', '${recipe.nom}')">Vendredi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Samedi', '${recipe.nom}')">Samedi</button></li>
+      <li><button class="dropdown-item" onclick="addToMealPlan('Dimanche', '${recipe.nom}')">Dimanche</button></li>
+    </ul>
+  `;
+
   // Afficher le modal
   const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
     keyboard: false
@@ -144,7 +161,45 @@ async function displayRecipeDetails(recipeName) {
   window.recipeModalInstance = recipeModal; // Stocke l'instance du modal dans une variable globale
   recipeModal.show();
 }
-  
+
+// Fonction pour sauvegarder les données dans le localStorage
+function saveToLocalStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Fonction pour récupérer les données du localStorage
+function getFromLocalStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+
+
+
+// Fonction pour ajouter une recette au plan de repas
+function addToMealPlan(day, recipeName) {
+  // Récupérer le jour sélectionné et le nom de la recette
+  const selectedDay = day.toLowerCase(); // Convertir en minuscules pour la correspondance avec les ID
+  const recipe = { day: selectedDay, recipeName: recipeName };
+
+  // Récupérer la liste des recettes planifiées depuis le localStorage
+  let mealPlan = getFromLocalStorage('mealPlan');
+
+  // Ajouter la recette au plan de repas pour le jour sélectionné
+  mealPlan[selectedDay] = recipe;
+
+  // Mettre à jour le localStorage avec le nouveau plan de repas
+  saveToLocalStorage('mealPlan', mealPlan);
+
+  // Afficher la recette dans le tableau
+  const dayElement = document.getElementById(`recipeElement${day}`);
+  const recipeElement = document.createElement('p');
+  recipeElement.textContent = recipeName;
+  dayElement.appendChild(recipeElement);
+}
+
+
+
+ 
   // Fonction pour vérifier si une recette existe déjà dans les favoris
   function isRecipeInFavorites(recipe) {
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -163,3 +218,4 @@ function addToShoppingList(ingredient) {
   // Affiche les recettes favorites lors du chargement de la page favoris.html
   window.addEventListener('load', displayFavorites);
   displayFavorites();
+
