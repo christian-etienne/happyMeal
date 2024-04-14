@@ -81,37 +81,4 @@ function displayRecipeDetails(recipeName) {
     li.textContent = `${index + 1}. ${etape}`;
     modalSteps.appendChild(li);
   });
-//    // Ajouter un bouton "Ajouter à ma liste" à chaque ingrédient
-//    recipe.ingredients.forEach(ingredient => {
-//     const li = document.createElement('li');
-//     li.textContent = `${ingredient.nom} - ${ingredient.quantite}`;
-    
-//     // Créer le bouton "Ajouter à ma liste"
-//     const addButton = document.createElement('button');
-//     addButton.textContent = 'Ajouter à ma liste';
-//     addButton.classList.add('btn', 'btn-primary', 'btn-sm', 'ms-2');
-//     addButton.addEventListener('click', () => {
-//         // Ajouter le code pour ajouter cet ingrédient à la liste de l'utilisateur
-//         // Par exemple, vous pouvez appeler une fonction pour gérer l'ajout à la liste
-//         addToMyList(ingredient);
-//     });
-
-//     // Ajouter le bouton à l'élément de liste des ingrédients
-//     li.appendChild(addButton);
-
-//     // Ajouter l'élément de liste des ingrédients à la liste des ingrédients
-//     modalIngredients.appendChild(li);
-// });
-
-//   // Afficher le modal
-//   const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'), {
-//     keyboard: false
-//   });
-//   recipeModal.show();
-// }
-
-// // Fonction pour obtenir des éléments aléatoires d'un tableau
-// function getRandomElements(array, numberOfElements) {
-//   const shuffledArray = array.sort(() => Math.random() - 0.5);
-//   return shuffledArray.slice(0, numberOfElements);
-// }
+}
